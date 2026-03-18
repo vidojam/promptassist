@@ -77,3 +77,13 @@ npm run preview
 - `tailwind.config.js` - Tailwind content config
 - `postcss.config.js` - PostCSS plugin config
 - `vite.config.ts` - Vite config
+
+## Deploy to Vercel
+
+1. Push this project to GitHub.
+2. In Vercel, click **Add New Project** and import the `promptassist` repository.
+3. Keep the default settings (Vercel auto-detects Vite), then click **Deploy**.
+
+After deploy, each push to `main` will trigger a new production deployment.
+
+If auto-detection fails, set Build Command to `npm run build` and Output Directory to `dist`.
