@@ -26,7 +26,8 @@ const subjects = [
   "Animations and interactions",
   "Responsiveness",
   "Accessibility",
-  "Deliverable"
+  "Deliverable",
+  "Stripe"
 ];
 
 const maxSubtopicOptions = 25;
@@ -131,6 +132,7 @@ function App() {
     () => (showCheckedOnly ? rows.filter((item) => item.checked) : rows),
     [rows, showCheckedOnly]
   );
+  const canStartNewPrompt = showCheckedOnly && Boolean(promptOutput.trim());
 
   const clientHeader = normalize(clientName) ? `${normalize(clientName)} (checkmark)` : "Name of client";
 
@@ -331,8 +333,31 @@ function App() {
     }
   };
 
+  const startNewPrompt = () => {
+    setRows((currentRows) =>
+      currentRows.map((row) => ({
+        ...row,
+        checked: false,
+        subtopics: [],
+        subtopicOptions: [],
+        subtopicInput: ""
+      }))
+    );
+    setEditingOptionByRow({});
+    setEditingTextByRow({});
+    subtopicDetailsRefs.current.forEach((dropdown) => {
+      if (dropdown) {
+        dropdown.open = false;
+      }
+    });
+    setShowCheckedOnly(false);
+    setPromptOutput("");
+    setStatusMessage("All row and subtopic selections were cleared. You can build a new prompt now.");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <main className="mx-auto grid max-w-7xl gap-4 p-3 md:p-5">
+    <main id="top" className="mx-auto grid max-w-7xl gap-4 p-3 md:p-5">
       <header className="rounded-2xl border border-slate-700/60 bg-slate-900/70 p-4 shadow-xl shadow-slate-950/40 backdrop-blur">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -572,6 +597,18 @@ function App() {
           className="min-h-60 w-full rounded-lg border border-slate-600 bg-slate-950/70 px-3 py-2 text-slate-100 outline-none"
         />
       </section>
+
+      {canStartNewPrompt ? (
+        <div className="pointer-events-none fixed bottom-4 right-4 z-20 sm:bottom-6 sm:right-6">
+          <button
+            type="button"
+            onClick={startNewPrompt}
+            className="pointer-events-auto inline-flex rounded-full border border-amber-300/50 bg-slate-950/85 px-4 py-2 text-sm font-semibold text-amber-100 shadow-lg shadow-slate-950/40 backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-200 hover:bg-amber-500/20 focus:outline-none focus:shadow-[0_0_0_3px_rgba(251,191,36,0.35)]"
+          >
+            Generate New Prompt
+          </button>
+        </div>
+      ) : null}
     </main>
   );
 }

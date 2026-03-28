@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply m-0 min-h-screen bg-slate-950 text-slate-100 antialiased;
   background-image: radial-gradient(circle at 10% 10%, rgb(30 41 59 / 0.85) 0%, rgb(2 6 23) 50%, rgb(2 6 23) 100%);
